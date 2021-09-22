@@ -1,0 +1,8 @@
+template/*
+!template/.gitkeep
+application/config/database.php
+application/config/config.php
+xlsx/*
+!xlsx/.gitkeep
+!/**/.gitkeep
+.phpintel/*
