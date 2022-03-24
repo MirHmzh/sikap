@@ -67,6 +67,12 @@
     <script src="<?= base_url('') ?>assets/js/sweetalert.min.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="<?= base_url('') ?>assets/js/custom.min.js"></script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/images/apple-touch-icon.png') ?>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/images/favicon-32x32.png') ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/images/favicon-16x16.png') ?>">
+    <link rel="manifest" href="<?= base_url('assets/images/site.webmanifest') ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <style type="text/css" media="screen">
     .main-wrapper{

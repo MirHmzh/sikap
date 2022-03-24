@@ -20,13 +20,19 @@
 
     <!-- Custom Theme Style -->
     <link href="<?= base_url('assets/') ?>css/custom.min.css" rel="stylesheet">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/images/apple-touch-icon.png') ?>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/images/favicon-32x32.png') ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/images/favicon-16x16.png') ?>">
+    <link rel="manifest" href="<?= base_url('assets/images/site.webmanifest') ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
 
   <body class="login">
     <div>
       <a class="hiddenanchor" id="signup"></a>
       <a class="hiddenanchor" id="signin"></a>
-      
+
       <div class="login_wrapper">
         <div class="animate form login_form">
           <section class="login_content">
