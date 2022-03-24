@@ -88,6 +88,20 @@ class Siswa_model extends CI_Model {
 		$this->db->delete('tr_pendidikan', ['id_pendidikan' => $siswa->pendidikan]);
 		return $this->db->delete('mt_siswa', ['id_siswa' => $id]);
 	}
+
+	function get_pleton()
+	{
+		$this->db->select('pleton');
+		$this->db->group_by('pleton');
+		return $this->db->get('mt_siswa')->result();
+	}
+
+	function get_siswa_by_pleton($pleton)
+	{
+		$this->db->select('nama_siswa,id_siswa');
+		$this->db->where('pleton', $pleton);
+		return $this->db->get('mt_siswa')->result();
+	}
 }
 
 /* End of file Siswa_model.php */

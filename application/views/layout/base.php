@@ -112,6 +112,7 @@
                 <ul class="nav side-menu">
                   <li <?= $this->session->userdata('menu') == 'siswa' ? 'class="current-page"' : ''?>><a href="<?= base_url('siswa') ?>"><i class="fa fa-bars"></i> Data Siswa</a></li>
                   <li <?= $this->session->userdata('menu') == 'nilaimk' ? 'class="current-page"' : ''?>><a href="<?= base_url('nilaimk') ?>"><i class="fa fa-edit"></i> Nilai MK</a></li>
+                  <li <?= $this->session->userdata('menu') == 'presensi' ? 'class="current-page"' : ''?>><a href="<?= base_url('presensi') ?>"><i class="fa fa-clipboard"></i> Presensi</a></li>
                   <?php if ($this->session->userdata('role') == 1): ?>
                     <li <?= $this->session->userdata('menu') == 'users' ? 'class="current-page"' : ''?>><a href="<?= base_url('users') ?>" ><i class="fa fa-user"></i> Users</a></li>
                   <?php endif ?>

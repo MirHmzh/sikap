@@ -21,7 +21,7 @@ class Users extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('layout/base', ['content_view' => 'page/users/list']);
+		$this->load->view('layout/base', ['content_view' => 'page/users/index']);
 	}
 
 	function get_users()
