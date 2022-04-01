@@ -6,3 +6,4 @@ xlsx/*
 !xlsx/.gitkeep
 !/**/.gitkeep
 .phpintel/*
+*.sql
