@@ -11,6 +11,36 @@
 <script src="<?= base_url('assets/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js') ?>"></script>
 <script src="<?= base_url('assets/vendors/datatables.net-scroller/js/dataTables.scroller.min.js') ?>"></script>
 
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-export-weekly">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Presensi Mingguan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="POST" role="form">
+          <div class="form-group">
+            <div class="col-sm-6">
+              <select name="pleton" id="pleton" class="form-control" required="required">
+                <option value="">-- Pilih Pleton --</option>
+              </select>
+            </div>
+            <div class="col-sm-6">
+              <input type="week" name="week" id="week" class="form-control" value="" required="required" title="">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onClick="cetakWeekly()">Cetak</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="x_panel">
   <div class="x_title">
     <h2>Data Presensi</h2>
@@ -23,11 +53,12 @@
         </a>
       </li>
       <li>
-        <a href="<?= base_url('presensi/export') ?>" title="">
+        <a data-toggle="modal" href='#modal-export-weekly' title="">
           <button type="button" class="btn btn-success">
             <i class="fa fa-print"></i>
           </button>
         </a>
+        <!-- <input type="week" name="" id="input" class="form-control" value="" required="required" title=""> -->
       </li>
     </ul>
     <div class="clearfix"></div>
@@ -56,6 +87,24 @@
 
 <script type="text/javascript" charset="utf-8">
   let datatable;
+  $('#modal-export-weekly').on('show.bs.modal', () => {
+    $.ajax({
+      url: "<?= base_url('presensi/get_pleton') ?>",
+      type: 'GET',
+      dataType: 'json'
+    })
+    .done(function(data) {
+      let html = ``;
+      $.each(data, function(index, val) {
+         html += `<option value="${val.pleton}">${val.pleton}</option>`
+      });
+      $('#pleton').html(html);
+    })
+    .fail(function() {
+      console.log("error");
+    });
+
+  });
   $(document).ready(function() {
     datatable = $('#datatable-presensi').DataTable({
       processing: true,
@@ -88,7 +137,6 @@
 	            <i class="fa fa-print"></i>
 	          </button>
             `
-            console.log(row);
             return html;
           }
         }
@@ -136,5 +184,9 @@
 
   function exp(pleton, tgl) {
   	window.open("<?= base_url('presensi/export_daily/') ?>"+pleton+'/'+tgl)
+  }
+
+  function cetakWeekly() {
+    window.open("<?= base_url('presensi/export_weekly/') ?>"+$('#pleton').val()+"/"+$("#week").val());
   }
 </script>

@@ -33,6 +33,12 @@ class Presensi extends CI_Controller {
 		echo json_encode($datas);
 	}
 
+	public function get_pleton()
+	{
+		$pleton = $this->Presensi_model->get_pleton();
+		echo json_encode($pleton);
+	}
+
 	public function index()
 	{
 		$this->load->view('layout/base', ['content_view' => 'page/presensi/list']);
@@ -345,6 +351,161 @@ class Presensi extends CI_Controller {
 		header('Cache-Control: max-age=0');
 
 		$writer->save('php://output');
+	}
+
+	public function export_weekly($pleton, $week)
+	{
+		$start_date = date("Y-m-d", strtotime($week));
+		$end_date = date("Y-m-d", strtotime($week.'+6 days'));
+
+		$data_presensi = $this->Presensi_model->nilai_mingguan($pleton, $start_date, $end_date);
+
+		$presensi = [];
+		foreach ($data_presensi as $k => $v) {
+			$presensi[$v['id_siswa']]['nama'] = $v['nama_siswa'];
+			$presensi[$v['id_siswa']]['nosis'] = $v['nosis_panjang'];
+			$presensi[$v['id_siswa']]['nilai'][] = $v['nilai_akhir'];
+		}
+
+		$s = new Spreadsheet();
+		$sheet = $s->getActiveSheet();
+
+		$center = array(
+	        'alignment' => array(
+	            'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+	            'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+	        )
+	    );
+
+	    $sheet->mergeCells('A1:D1');
+	    $sheet->getStyle("A1:D1")->applyFromArray($center);
+	    $sheet->setCellValue('A1', 'KEPOLISIAN NEGARA REPUBLIK INDONESIA');
+
+	    $sheet->mergeCells('A2:D2');
+	    $sheet->getStyle("A2:D2")->applyFromArray($center);
+	    $sheet->setCellValue('A2', 'DAERAH JAWA TIMUR');
+
+	    $sheet->mergeCells('A3:D3');
+	    $sheet->getStyle("A3:D3")->applyFromArray($center);
+	    $sheet->setCellValue('A3', 'SEKOLAH POLISI NEGARA');
+
+	    $sheet->mergeCells('A7:N7');
+	    $sheet->getStyle("A7:N7")->applyFromArray($center);
+	    $sheet->setCellValue('A7', 'LEMBAR PENILAIAN MK MINGGUAN');
+
+	    $sheet->mergeCells('A8:N8');
+	    $sheet->getStyle("A8:N8")->applyFromArray($center);
+	    $sheet->setCellValue('A8', 'SISWA DIKTUK POLRI T.A '.date('Y'));
+
+	    $sheet->mergeCells('A11:B11');
+	    $sheet->getStyle("A11:B11")->applyFromArray($center);
+	    $sheet->setCellValue('A11', 'PELETON : '.$pleton);
+
+	    $sheet->mergeCells('A16:A17');
+	    $sheet->getStyle("A16:A17")->applyFromArray($center);
+	    $sheet->setCellValue('A16', 'NO');
+
+	    $sheet->mergeCells('B16:B17');
+	    $sheet->getStyle("B16:B17")->applyFromArray($center);
+	    $sheet->setCellValue('B16', 'NAMA');
+
+	    $sheet->mergeCells('C16:C17');
+	    $sheet->getStyle("C16:C17")->applyFromArray($center);
+	    $sheet->setCellValue('C16', 'NOSIS');
+
+	    $sheet->getStyle("D16")->applyFromArray($center);
+	    $sheet->setCellValue('D16', 'NILAI');
+
+	    $sheet->mergeCells('E16:K16');
+	    $sheet->getStyle("E16:K16")->applyFromArray($center);
+	    $sheet->setCellValue('E16', 'NILAI HARIAN');
+
+	    $sheet->getStyle("E17")->applyFromArray($center);
+	    $sheet->setCellValue('E17', 'SN');
+
+	    $sheet->getStyle("F17")->applyFromArray($center);
+	    $sheet->setCellValue('F17', 'SL');
+
+	    $sheet->getStyle("G17")->applyFromArray($center);
+	    $sheet->setCellValue('G17', 'RB');
+
+	    $sheet->getStyle("H17")->applyFromArray($center);
+	    $sheet->setCellValue('H17', 'KM');
+
+	    $sheet->getStyle("I17")->applyFromArray($center);
+	    $sheet->setCellValue('I17', 'JM');
+
+	    $sheet->getStyle("J17")->applyFromArray($center);
+	    $sheet->setCellValue('J17', 'SB');
+
+	    $sheet->getStyle("K17")->applyFromArray($center);
+	    $sheet->setCellValue('K17', 'MG');
+
+	    $sheet->getStyle("L16")->applyFromArray($center);
+	    $sheet->setCellValue('L16', 'NILAI');
+
+	    $sheet->getStyle("M16")->applyFromArray($center);
+	    $sheet->setCellValue('M16', 'RANK');
+
+	    $sheet->getStyle("M17")->applyFromArray($center);
+	    $sheet->setCellValue('M17', 'SATUAN');
+
+	    $sheet->getStyle("N16")->applyFromArray($center);
+	    $sheet->setCellValue('N16', 'KETERANGAN');
+
+	    foreach ($presensi as $k => $v) {
+	    	$init = 1;
+	    	$early = 18;
+
+	    	$sheet->getStyle("A$early")->applyFromArray($center);
+	    	$sheet->setCellValue("A$early", $init);
+
+	    	$sheet->getStyle("B$early")->applyFromArray($center);
+	    	$sheet->setCellValue("B$early", $v['nama']);
+
+	    	$sheet->getStyle("C$early")->applyFromArray($center);
+	    	$sheet->setCellValue("C$early", $v['nosis']);
+
+	    	$sheet->getStyle("E$early")->applyFromArray($center);
+	    	$sheet->setCellValue("E$early", (isset($v['nilai'][0]) ? $v['nilai'][0] : ''));
+
+	    	$sheet->getStyle("F$early")->applyFromArray($center);
+	    	$sheet->setCellValue("F$early", (isset($v['nilai'][1]) ? $v['nilai'][1] : ''));
+
+	    	$sheet->getStyle("G$early")->applyFromArray($center);
+	    	$sheet->setCellValue("G$early", (isset($v['nilai'][2]) ? $v['nilai'][2] : ''));
+
+	    	$sheet->getStyle("H$early")->applyFromArray($center);
+	    	$sheet->setCellValue("H$early", (isset($v['nilai'][3]) ? $v['nilai'][3] : ''));
+
+	    	$sheet->getStyle("I$early")->applyFromArray($center);
+	    	$sheet->setCellValue("I$early", (isset($v['nilai'][4]) ? $v['nilai'][4] : ''));
+
+	    	$sheet->getStyle("J$early")->applyFromArray($center);
+	    	$sheet->setCellValue("J$early", (isset($v['nilai'][5]) ? $v['nilai'][5] : ''));
+
+	    	$sheet->getStyle("K$early")->applyFromArray($center);
+	    	$sheet->setCellValue("K$early", (isset($v['nilai'][6]) ? $v['nilai'][6] : ''));
+
+	    	$nilai_c = 0; $nilai_sum = 0;
+	    	foreach ($v['nilai'] as $key => $val) {
+	    		$nilai_c++;
+	    		$nilai_sum += $val;
+	    	}
+
+	    	$sheet->getStyle("L$early")->applyFromArray($center);
+	    	$sheet->setCellValue("L$early", $nilai_sum/$nilai_c);
+	    }
+
+	    $writer = new Xlsx($s);
+		$filename = 'NILAI_MINGGUAN-'.$week;
+
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment;filename="'. $filename .'.xlsx"');
+		header('Cache-Control: max-age=0');
+
+		$writer->save('php://output');
+
 	}
 
 }
