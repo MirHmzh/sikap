@@ -135,7 +135,7 @@
             `
             return html;
           },
-        }
+        },
         { data : "id_siswa",
           render : (data, type, row) => {
           let html = `
