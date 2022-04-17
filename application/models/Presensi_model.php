@@ -10,8 +10,9 @@ class Presensi_model extends CI_Model {
 
 	public function get_presensi()
 	{
-		$this->db->select('pleton,tgl_checklist');
+		$this->db->select('pleton,tgl_checklist,mt_pleton.masa_pendidikan_awal');
 		$this->db->join('mt_siswa', 'mt_siswa.id_siswa = tr_presensi.id_siswa', 'left');
+		$this->db->join('mt_pleton', 'mt_siswa.pleton = mt_pleton.nama_pleton', 'left');
 		$this->db->limit($this->input->post('length'));
 		$this->db->offset($this->input->post('start'));
 		$this->db->group_by('pleton,tgl_checklist');

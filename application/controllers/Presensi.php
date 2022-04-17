@@ -175,6 +175,13 @@ class Presensi extends CI_Controller {
 		}
 	}
 
+	public function cek()
+	{
+		$awal = DateTime::createFromFormat('Y-m-d', '2022-01-01');
+		$date_present = DateTime::createFromFormat('Y-m-d', '2022-03-22');
+		echo ceil(($date_present->getTimestamp() - $awal->getTimestamp()) / (60 * 60 * 24 * 7));
+	}
+
 	public function export_daily($pleton, $tgl_checklist)
 	{
 		$s = new Spreadsheet();
@@ -364,7 +371,34 @@ class Presensi extends CI_Controller {
 		foreach ($data_presensi as $k => $v) {
 			$presensi[$v['id_siswa']]['nama'] = $v['nama_siswa'];
 			$presensi[$v['id_siswa']]['nosis'] = $v['nosis_panjang'];
-			$presensi[$v['id_siswa']]['nilai'][] = $v['nilai_akhir'];
+			$day_presensi = DateTime::createFromFormat('Y-m-d', $v['tgl_checklist']);
+			switch ($day_presensi->format('D')) {
+				case 'Mon':
+					$presensi[$v['id_siswa']]['nilai'][0] = $v['nilai_akhir'];
+					break;
+				case 'Tue':
+					$presensi[$v['id_siswa']]['nilai'][1] = $v['nilai_akhir'];
+					break;
+				case 'Wed':
+					$presensi[$v['id_siswa']]['nilai'][2] = $v['nilai_akhir'];
+					break;
+				case 'Thu':
+					$presensi[$v['id_siswa']]['nilai'][3] = $v['nilai_akhir'];
+					break;
+				case 'Fri':
+					$presensi[$v['id_siswa']]['nilai'][4] = $v['nilai_akhir'];
+					break;
+				case 'Sat':
+					$presensi[$v['id_siswa']]['nilai'][5] = $v['nilai_akhir'];
+					break;
+				case 'Sun':
+					$presensi[$v['id_siswa']]['nilai'][6] = $v['nilai_akhir'];
+					break;
+
+				default:
+					# code...
+					break;
+			}
 		}
 
 		$s = new Spreadsheet();
@@ -453,9 +487,9 @@ class Presensi extends CI_Controller {
 	    $sheet->getStyle("N16")->applyFromArray($center);
 	    $sheet->setCellValue('N16', 'KETERANGAN');
 
+	    $init = 1;
+	    $early = 18;
 	    foreach ($presensi as $k => $v) {
-	    	$init = 1;
-	    	$early = 18;
 
 	    	$sheet->getStyle("A$early")->applyFromArray($center);
 	    	$sheet->setCellValue("A$early", $init);
@@ -495,6 +529,8 @@ class Presensi extends CI_Controller {
 
 	    	$sheet->getStyle("L$early")->applyFromArray($center);
 	    	$sheet->setCellValue("L$early", $nilai_sum/$nilai_c);
+	    	$early++;
+	    	$init++;
 	    }
 
 	    $writer = new Xlsx($s);

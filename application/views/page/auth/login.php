@@ -26,12 +26,28 @@
     <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/images/favicon-16x16.png') ?>">
     <link rel="manifest" href="<?= base_url('assets/images/site.webmanifest') ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css" media="screen">
+      #bgdiv{
+        position: absolute;
+        height: 100vh;
+        width: 100vw;
+        /*background: url("<?= base_url('assets/images/gd_tribrata.jpg') ?>") no-repeat !important;*/
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: 100% auto;
+        top: 0;
+      }
+    </style>
   </head>
 
-  <body class="login">
+  <body>
+    <div id="bgdiv">
+      <img src="<?= base_url('assets/images/gd_tribrata.jpg') ?>" alt="" style="width: 100%">
+    </div>
     <div>
-      <a class="hiddenanchor" id="signup"></a>
-      <a class="hiddenanchor" id="signin"></a>
+      <!-- <a class="hiddenanchor" id="signup"></a>
+      <a class="hiddenanchor" id="signin"></a> -->
 
       <div class="login_wrapper">
         <div class="animate form login_form">

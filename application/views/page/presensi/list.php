@@ -72,6 +72,7 @@
               <tr>
                 <th>Tgl. Presensi</th>
                 <th>Pleton</th>
+                <th>Minggu Pendidikan</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -124,6 +125,15 @@
           }
         },
         { data : "pleton" },
+        { data: "masa_pendidikan_awal",
+          render: (data,type,row) => {
+            let awal = Date.parse(row.masa_pendidikan_awal);
+            let masa = Date.parse(row.tgl_checklist);
+            console.log((masa.valueOf()));
+            let minggu = Math.ceil((masa-awal) / (1000 * 60 * 60 * 24 * 7));
+            return minggu;
+          }
+        },
         { data : "pleton",
           render : (data, type, row) => {
           let html = `
