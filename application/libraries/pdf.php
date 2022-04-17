@@ -13,7 +13,7 @@
  */
 
 use Dompdf\Dompdf;
-class Pdf extends Dompdf{
+class pdf extends Dompdf{
     /**
      * PDF filename
      * @var String
