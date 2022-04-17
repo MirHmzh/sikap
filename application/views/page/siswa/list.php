@@ -135,7 +135,8 @@
             `
             return html;
           },
-          { data : "id_siswa",
+        }
+        { data : "id_siswa",
           render : (data, type, row) => {
           let html = `
             <a href="<?= base_url('siswa/ijazah/') ?>${data}" title="">
@@ -146,6 +147,7 @@
             `
             return html;
         }
+      }
       ],
     });
   });
