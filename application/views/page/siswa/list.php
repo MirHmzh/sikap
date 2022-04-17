@@ -52,6 +52,7 @@
                 <th>Nosis Panjang</th>
                 <th>Nama</th>
                 <th>Action</th>
+                <th>Ijazah</th>
               </tr>
             </thead>
             <tbody>
@@ -131,6 +132,12 @@
                 <i class="fa fa-pencil"></i>
               </button>
             </a>
+            `
+            return html;
+          },
+          { data : "id_siswa",
+          render : (data, type, row) => {
+          let html = `
             <a href="<?= base_url('siswa/ijazah/') ?>${data}" title="">
               <button type="button" class="btn btn-primary" data-id="${data}">
                 <i class="fa fa-print"></i>
@@ -138,7 +145,6 @@
             </a>
             `
             return html;
-          }
         }
       ],
     });
